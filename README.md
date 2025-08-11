@@ -1,113 +1,52 @@
-# Dyslexian Substitution Cipher Solver - Algorithm Analysis
+# Signals from Outer Space
 
-## Overview
-This code implements a heuristic-based solver for substitution ciphers that uses a combination of frequency analysis, pattern matching, and optimization algorithms to decrypt encrypted text.
+## Getting Started
 
-## Algorithms Used
+**Important: Do not directly clone this repository!**
 
-### 1. **Frequency Analysis**
-- **Purpose**: Creates initial cipher-to-plaintext mappings based on letter frequency
-- **Method**: Counts occurrence of each letter in the cipher text and maps most frequent cipher letters to most frequent English letters
-- **Implementation**: Uses the provided top-10 English letter frequency order: "EATOIRSTNU"
+To work on this challenge, please follow these steps:
 
-### 2. **Pattern-Based Mapping Enhancement**
-- **Purpose**: Improves initial mappings using common English patterns
-- **Patterns Used**: 
-  - Common words: "THE", "AND", "ING", "ION"
-  - Digraphs (2-letter combinations): "TH", "HE", "AN", "IN", "ER", etc.
-  - Trigrams and quadgrams for more sophisticated pattern recognition
+1. **Fork this repository** to your own GitHub account by clicking the "Fork" button at the top right of this repository page
+2. **Clone your forked repository** to your local machine:
 
-### 3. **Hill Climbing Optimization**
-- **Purpose**: Refines the initial mapping by iteratively improving it
-- **Method**: Makes small random changes (swapping two letter mappings) and keeps changes that improve the score
-- **Enhancement**: Includes simulated annealing to escape local optima
+   ```bash
+   git clone https://github.com/YOUR_USERNAME/Outer-Space-Signals.git
+   ```
 
-### 4. **Simulated Annealing**
-- **Purpose**: Prevents the hill climbing from getting stuck in local maxima
-- **Method**: Occasionally accepts worse solutions with decreasing probability as "temperature" cools
-- **Parameters**: Starting temperature = 1.0, cooling rate = 0.99995
+3. Work on the challenge in your forked repository
+4. Submit your solution by providing a link to your forked repository
 
-### 5. **Multi-Restart Strategy**
-- **Purpose**: Increases chances of finding global optimum
-- **Method**: Runs multiple hill climbing attempts with different starting points for each promising window
+This ensures that your work is properly attributed to you and prevents conflicts with the original repository.
 
-### 6. **Sliding Window Search**
-- **Purpose**: Finds the best 721-character segment within the larger signal
-- **Method**: Evaluates every possible 721-character window in the input text
+## Directory Structure
 
-## Step-by-Step Process
+```text
+.
+├── README.md -- Challenge intrustions 
+├── signal.txt -- file containing raw signals. 
+└── src
+    └── main.py -- code file
+```
 
-### Phase 1: Initialization and Data Loading
-1. **Load Signal**: Read the encrypted text from file, normalize to uppercase letters and spaces only
-2. **Load Quadgrams**: Load or generate 4-letter sequence statistics for English text scoring
-3. **Set Parameters**: Initialize window length (721 chars), common words list, and algorithm parameters
 
-### Phase 2: Candidate Window Identification
-4. **Sliding Window Analysis**: 
-   - Extract every possible 721-character window from the signal
-   - For each window, perform frequency analysis to get letter occurrence order
-   - Create initial substitution mapping using frequency matching
-   - Score each window using basic pattern recognition
-   - Keep top candidates (default: 100 windows) for detailed analysis
+## The Challenge
 
-### Phase 3: Initial Mapping Creation
-5. **Frequency-Based Mapping**: 
-   - Count letter frequencies in the cipher window
-   - Map most frequent cipher letters to most frequent English letters ("EATOIRSTNU")
-6. **Pattern Enhancement**:
-   - Try to identify common English patterns like "THE", "AND", "ING"
-   - Adjust mappings to favor these common patterns
-   - Fill remaining unmapped letters
+It's finally happened. Earth's radio waves have reached other sentient creatures far out in the universe, reaching the planet Dyslexia. They have reversed engineered English from our transmissions and have sent us a message of their own, which has been received together with other random space noise.  Unfortunately, the Dyslexians have substituted all the letters of the English language for other letters.  
 
-### Phase 4: Iterative Refinement (Hill Climbing + Simulated Annealing)
-7. **Multiple Restart Optimization**:
-   - For each promising window, perform 6 independent optimization runs
-   - Each run starts with a slightly randomized version of the initial mapping
-8. **Hill Climbing Process**:
-   - Randomly swap two letter mappings in the current solution
-   - Decode the text with the new mapping
-   - Calculate fitness score using multiple criteria
-   - Accept or reject the change based on score improvement and temperature
-9. **Scoring Function**:
-   - **Word Recognition**: Bonus points for identifying common English words
-   - **Pattern Recognition**: Points for common English letter patterns and digraphs
-   - **Quadgram Analysis**: Statistical analysis of 4-letter sequences
-   - **Penalties**: Deductions for impossible letter combinations
+For example (this is not the substitution, only an example) H to B, E to P, L to Q, O to M, so the word HELLO, would look like BPQQM. Fortunately, they have left spaces intact, so "BPQQM OMNCU" would be "HELLO WORLD".
 
-### Phase 5: Solution Selection and Output
-10. **Best Solution Selection**: Choose the window and mapping combination with highest score
-11. **Final Decoding**: Apply the best mapping to decode the 721-character window
-12. **Output Generation**: 
-    - Extract first 9 words as requested
-    - Save full decoded text to file
-    - Display mapping and statistics
+As NASA's finest Pythonist, they have sent the gabled message to your office (a converted broom closet in Nasa's utility building situated 3KM from the main campus). It is your responsibility to decipher this signal.
 
-## Key Features
++ The Signal (see attachment) contains 64 KB of English uppercase letters and spaces.
 
-### Scoring Mechanism
-The fitness function combines multiple English language characteristics:
-- **Word Matching** (40% weight): Recognition of common English words
-- **Digraph Scoring** (30% weight): Common 2-letter combinations
-- **Quadgram Scoring** (30% weight): 4-letter sequence patterns
-- **Penalty System**: Reduces score for impossible letter combinations
++ The message is placed at a random place within the 64KB of text.
 
-### Optimization Enhancements
-- **Simulated Annealing**: Prevents getting trapped in local optima
-- **Multiple Restarts**: Increases probability of finding global optimum
-- **Stagnation Detection**: Stops optimization when no improvement occurs
-- **Adaptive Parameters**: Temperature cooling and iteration limits
++ The length of the message is known, it's 721 characters long.
 
-### Robustness Features
-- **Window Search**: Handles cases where only part of the signal contains the target text
-- **Normalization**: Handles different input formats by normalizing to uppercase
-- **Error Handling**: Graceful handling of short inputs and missing files
++ The message is a substitution cipher encrypted English. The substitutions are stable (1 source letter maps to 1 destination letter).
 
-## Computational Complexity
-- **Time Complexity**: O(n × w × r × i) where:
-  - n = signal length
-  - w = number of top candidate windows
-  - r = number of restarts per window
-  - i = hill climbing iterations
-- **Space Complexity**: O(1) relative to input size (fixed-size data structures)
++ The substitutions mapping is not known.
 
-This solver represents a sophisticated approach to cryptanalysis, combining classical frequency analysis with modern optimization techniques to achieve robust decryption of substitution ciphers.
++ The top 10 English letters in the deciphered text by frequency is: E A T O I R S N H U
+
+Add the first 9 words from the deciphered message to the top of your proposal. You get additional points for describing the process and well (human!) written python source code used to decipher.
